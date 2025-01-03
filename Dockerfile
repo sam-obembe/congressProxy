@@ -5,7 +5,7 @@ RUN go mod download && go mod verify
 RUN GOOS=linux GOARCH=amd64 go build
 RUN ls
 
-FROM scratch
+FROM alpine:latest
 EXPOSE 5050
 WORKDIR /proxyapi
 COPY --from=build /api/congressProxy  .
