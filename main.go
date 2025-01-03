@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -23,7 +24,9 @@ func main() {
 
 		outreq := *r
 		log.Default().Println(outreq.URL)
-		outreq.URL = targetURL.JoinPath(outreq.URL.String())
+		//log.Default().Println(outreq.URL.)
+
+		//outreq.URL = targetURL.JoinPath(outreq.URL.String())
 		outreq.Host = targetURL.Host
 
 		query := outreq.URL.Query()
@@ -34,9 +37,10 @@ func main() {
 		// Update the URL with the modified query parameters
 		outreq.URL.RawQuery = query.Encode()
 
-		log.Default().Println(outreq.URL)
+		requrl := fmt.Sprintf("%s%s", targetURL.String(), outreq.URL.String())
+		log.Default().Println(requrl)
 
-		outresp, err := callCongressApi(outreq.URL.String(), outreq.Method)
+		outresp, err := callCongressApi(requrl, outreq.Method)
 		if err != nil {
 			log.Default().Println(err.Error())
 			http.Error(w, "Server Error", http.StatusInternalServerError)
